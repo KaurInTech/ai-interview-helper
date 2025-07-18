@@ -44,7 +44,24 @@ export default function Dashboard() {
    * Fetch interview data when the component mounts or userId changes.
    * If userId is not available, it exits early.
    */
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!userId) {
+        return; // Exit if userId is not available
+      }
+
+      try {
+        const data = await getInterviews(userId); // Fetch interviews
+        setInterviewData(data); // Update state with fetched data
+      } catch (error) {
+        console.error("Error fetching interview data:", error);
+        toast.error("Failed to load interview data."); // Show error toast
+      }
+    };
+
+    fetchData();
+  }, [userId]);
+
 
   const handleResumeSubmit = () => {
     toast("Resume uploaded successfully!", {
